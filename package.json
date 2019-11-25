@@ -1,7 +1,7 @@
 {
-  "name": "earthsdk-plotting-symbol",
+  "name": "earthsdk-custom-primitive",
   "version": "1.0.0",
-  "description": "EarthSDK标绘插件",
+  "description": "EarthSDK自定义图元插件",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "dev2": "cross-env XBSJ_IMPORT=external webpack-dev-server --open --config webpack.dev.js",
