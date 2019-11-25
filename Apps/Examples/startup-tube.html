@@ -8,6 +8,7 @@
     <meta name="xbsj-labels" content="Earth起步"></meta>
     <title>管子</title>
     <!-- 0 引入js文件 -->
+    <script src="https://cdn.bootcss.com/three.js/r83/three.min.js"></script>
     <script src="../../XbsjEarth/XbsjEarth.js"></script>
     <script src="./scripts/vue.min.js"></script>
     <style>
@@ -113,6 +114,7 @@
                             "czmObject": {
                                 "name": "默认离线影像",
                                 "xbsjType": "Imagery",
+                                "brightness": 0.2,
                                 "xbsjImageryProvider": {
                                     "createTileMapServiceImageryProvider": {
                                         "url": XE.HTML.cesiumDir + 'Assets/Textures/NaturalEarthII',
@@ -152,12 +154,11 @@
                 tube.speed = [1, 1];
 
                 tube.flyTo();
-                window.tube = tube; // 方便调试
 
                 this._earth = earth;
 
                 // only for Debug
-                window.circle = circle;
+                window.tube = tube; // 方便调试
                 window.earth = earth;
             },
             methods: {

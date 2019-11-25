@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    plottingSymbol: './src/index.js'
+    customPrimitive: './src/index.js'
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -26,7 +26,7 @@ module.exports = {
       },
       {
         from: 'Static/assets',
-        to: 'XbsjEarth-Plugins/plottingSymbol/assets',
+        to: 'XbsjEarth-Plugins/customPrimitive/assets',
         toType: 'dir'
       },
       {
@@ -65,7 +65,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
-    filename: 'XbsjEarth-Plugins/plottingSymbol/[name].js',
+    filename: 'XbsjEarth-Plugins/customPrimitive/[name].js',
     path: path.resolve(__dirname, 'dist')
   }
 };

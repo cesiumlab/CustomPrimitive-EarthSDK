@@ -115,7 +115,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         super(earth, guid);
 
         // 1. Tube内部管理这一个customPrimitive对象
-        this._createCustomPrimitive();
+        this._createCustomPrimitive(earth);
 
         // 2. 当positions发生变化时，相应地改变customPrimitive对象
         // disposer属性是一个数组，用来收集需要在对象销毁时指定的函数
@@ -172,7 +172,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         }));
     }
 
-    _createCustomPrimitive() {
+    _createCustomPrimitive(earth) {
         const renderState = XE.Obj.CustomPrimitive.getRenderState(true, false);
 
         const fragmentShaderSource = `
