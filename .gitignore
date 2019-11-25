@@ -1,0 +1,8 @@
+node_modules
+dist
+XbsjBuild/dist
+Build
+out
+Apps/static/LargeSampleData
+Static/XbsjEarth
+Static/XbsjCesium

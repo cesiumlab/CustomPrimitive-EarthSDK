@@ -1,0 +1,32 @@
+{
+  "name": "earthsdk-plotting-symbol",
+  "version": "1.0.0",
+  "description": "EarthSDK标绘插件",
+  "scripts": {
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "dev2": "cross-env XBSJ_IMPORT=external webpack-dev-server --open --config webpack.dev.js",
+    "xbsjDebug": "cross-env NODE_ENV=xbsjDebug webpack-dev-server --open --config webpack.dev.js",
+    "xbsjDebug2": "cross-env NODE_ENV=xbsjDebug2 webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "build2": "cross-env XBSJ_IMPORT=external webpack --config webpack.prod.js",
+    "gallery": "node Tools/examples/gallery.js",
+    "login": "npm adduser --registry http://registry.npmjs.org",
+    "publish2": "npm publish --registry http://registry.npmjs.org"
+  },
+  "keywords": [],
+  "author": "cesiumlab",
+  "files": [
+    "dist"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "cross-env": "^5.2.1",
+    "earthsdk": "1.2.5",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.2"
+  }
+}
