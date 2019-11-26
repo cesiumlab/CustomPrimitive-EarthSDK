@@ -3,7 +3,7 @@
 
 // 0.1 函数准备，借助THREE.js来获取管线的顶点坐标数值
 function createVertexForTube(rawPositions, radius) {
-    if (!rawPositions || rawPositions.length === 0) {
+    if (!rawPositions || rawPositions.length <= 1) {
         throw new Error('rawPositions error!')
     }
 
@@ -131,7 +131,7 @@ class Tube extends XE.Core.XbsjCzmObj {
             positions: [...this.positions],
             radius: this.radius,
         }), () => {
-            if (this.positions.length > 0) {
+            if (this.positions.length > 1) {
                 const {
                     center,
                     positions,
