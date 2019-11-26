@@ -17,10 +17,16 @@ function createVertexForTube(rawPositions, radius) {
         //     [2.0312082890850296, 0.6964532955295221, 50.0],              
         // ];
 
+        // const positions = [];
+        // const rl = rawPositions.length / 3 | 0;
+        // for (let i = 0; i < rl; ++i) {
+        //     positions.push([rawPositions[i * 3 + 0], rawPositions[i * 3 + 1], rawPositions[i * 3 + 2]]);
+        // }
+
         const positions = [];
-        const rl = rawPositions.length / 3 | 0;
+        const rl = rawPositions.length;
         for (let i = 0; i < rl; ++i) {
-            positions.push([rawPositions[i * 3 + 0], rawPositions[i * 3 + 1], rawPositions[i * 3 + 2]]);
+            positions.push([rawPositions[i][0], rawPositions[i][1], rawPositions[i][2]]);
         }
 
         const [localPositions, centerL] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
@@ -208,6 +214,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         };
 
         this._customPrimitive = new XE.Obj.CustomPrimitive(earth);
+        this._customPrimitive.registerEditing();
         this._customPrimitive.xbsjFromJSON(config);
 
         // disposers用来再对象销毁时调用
@@ -219,6 +226,22 @@ class Tube extends XE.Core.XbsjCzmObj {
     flyTo() {
         this._customPrimitive.flyTo();
     }
+
+    set editing(val) {
+        this._customPrimitive.editing = !!val;
+    }
+
+    get editing() {
+        return this._customPrimitive.editing;
+    }
+
+    set creating(val) {
+        this._customPrimitive.creating = !!val;
+    }
+
+    get creating() {
+        return this._customPrimitive.creating;
+    }    
 }
 
 // 2 设置默认属性
