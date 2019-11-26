@@ -2,7 +2,7 @@
 // 演示如何创建扩展一个czmObject类型的对象
 
 // 0.1 函数准备，借助THREE.js来获取管线的顶点坐标数值
-function createVertexForTube(rawPositions, radius) {
+function createVertexForTube(rawPositions, tubularSegments, radius, radialSegments, closed) {
     if (!rawPositions || rawPositions.length <= 1) {
         throw new Error('rawPositions error!')
     }
@@ -40,7 +40,7 @@ function createVertexForTube(rawPositions, radius) {
         path = new THREE.CatmullRomCurve3(vectors);
     }
 
-    var geometry = new THREE.TubeGeometry(path, 50, radius, 18, false);
+    var geometry = new THREE.TubeGeometry(path, tubularSegments, radius, radialSegments, closed);
 
     var positions = geometry.faces.flatMap(e => {
         const va = geometry.vertices[e.a];
@@ -90,13 +90,37 @@ const defaultOptions = {
     */
     positions: [],
     /**
+    * 横向分割数
+    * @type {number}
+    * @instance
+    * @default 50
+    * @memberof Tube
+    */    
+    tubularSegments: 50,
+    /**
     * 半径大小，单位米
     * @type {number}
     * @instance
-    * @default 50.0
+    * @default 20.0
     * @memberof Tube
     */
     radius: 20.0,
+    /**
+    * 径向分割数
+    * @type {number}
+    * @instance
+    * @default 18
+    * @memberof Tube
+    */      
+    radialSegments: 18,
+    /**
+    * 是否封闭
+    * @type {boolean}
+    * @instance
+    * @default false
+    * @memberof Tube
+    */    
+    closed: false,
     /**
     * 速度数组，第一个元素表示移动速度，第二个元素表示旋转速度
     * @type {array}
@@ -129,7 +153,10 @@ class Tube extends XE.Core.XbsjCzmObj {
         // XE.MVVM.watch的返回值是一个函数，调用该函数可以取消监控。把该函数放入disposer数组以后，它就会在对象销毁时自动执行。
         this.disposers.push(XE.MVVM.watch(() => ({
             positions: [...this.positions],
+            tubularSegments: this.tubularSegments,
             radius: this.radius,
+            radialSegments: this.radialSegments,
+            closed: this.closed,
         }), () => {
             if (this.positions.length > 1) {
                 const {
@@ -138,7 +165,7 @@ class Tube extends XE.Core.XbsjCzmObj {
                     sts,
                     normals,
                     indices,
-                } = createVertexForTube(this.positions, this.radius);
+                } = createVertexForTube(this.positions, this.tubularSegments, this.radius, this.radialSegments, this.closed);
 
                 this._customPrimitive.position = center;
                 this._customPrimitive.positions = positions;
