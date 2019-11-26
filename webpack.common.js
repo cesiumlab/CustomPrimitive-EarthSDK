@@ -8,7 +8,9 @@ module.exports = {
     customPrimitive: './src/index.js'
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['dist']
+    }),
     new CopyWebpackPlugin([
       // 'Apps/**/*',
       'index.html',
