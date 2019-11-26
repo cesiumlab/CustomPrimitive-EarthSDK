@@ -10,8 +10,8 @@
     "build": "webpack --config webpack.prod.js",
     "build2": "cross-env XBSJ_IMPORT=external webpack --config webpack.prod.js",
     "gallery": "node Tools/examples/gallery.js",
-    "login": "npm adduser --registry http://registry.npmjs.org",
-    "publish2": "npm publish --registry http://registry.npmjs.org"
+    "login": "npm adduser --registry https://registry.npmjs.org",
+    "publish2": "npm publish --registry https://registry.npmjs.org"
   },
   "keywords": [],
   "author": "cesiumlab",
@@ -23,7 +23,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.1",
-    "earthsdk": "1.2.5",
+    "earthsdk": "1.2.8",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
