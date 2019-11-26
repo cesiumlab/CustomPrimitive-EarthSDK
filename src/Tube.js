@@ -176,15 +176,6 @@ class Tube extends XE.Core.XbsjCzmObj {
                 });
             }
         }));
-
-        // 5 编辑
-        this.disposers.push(XE.Earth.Interaction.InteractionProperty.registerPolylineCreating(this._earth, this, {
-            polylineCreatingProperty: 'creating',
-        }));
-    
-        this.disposers.push(XE.Earth.Interaction.InteractionProperty.registerPolylineEditing(this._earth, this, {
-            polylineEditingProperty: 'editing',
-        }));   
     }
 
     _createCustomPrimitive(earth) {
@@ -223,7 +214,6 @@ class Tube extends XE.Core.XbsjCzmObj {
         };
 
         this._customPrimitive = new XE.Obj.CustomPrimitive(earth);
-        this._customPrimitive.registerEditing();
         this._customPrimitive.xbsjFromJSON(config);
 
         // disposers用来再对象销毁时调用
@@ -236,21 +226,16 @@ class Tube extends XE.Core.XbsjCzmObj {
         this._customPrimitive.flyTo();
     }
 
-    // set editing(val) {
-    //     this._customPrimitive.editing = !!val;
-    // }
-
-    // get editing() {
-    //     return this._customPrimitive.editing;
-    // }
-
-    // set creating(val) {
-    //     this._customPrimitive.creating = !!val;
-    // }
-
-    // get creating() {
-    //     return this._customPrimitive.creating;
-    // }     
+    registerEditing() {
+        // 5 编辑
+        this.disposers.push(XE.Earth.Interaction.InteractionProperty.registerPolylineCreating(this._earth, this, {
+            polylineCreatingProperty: 'creating',
+        }));
+    
+        this.disposers.push(XE.Earth.Interaction.InteractionProperty.registerPolylineEditing(this._earth, this, {
+            polylineEditingProperty: 'editing',
+        }));   
+    }  
 }
 
 // 2 设置默认属性
