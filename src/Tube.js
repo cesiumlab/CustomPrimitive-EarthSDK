@@ -223,6 +223,8 @@ class Tube extends XE.Core.XbsjCzmObj {
                 });
             }
         }));
+
+        this._registerEditing();
     }
 
     _createCustomPrimitive(earth) {
@@ -258,7 +260,6 @@ class Tube extends XE.Core.XbsjCzmObj {
             fragmentShaderSource,
             pass: Cesium.Pass.TRANSLUCENT,
             // evalString,
-            autoRegisterEditing: true, // 自动注册编辑，设置为true以后，才可以使用creating、positionEditing、rotationEditing属性。
         };
 
         this._customPrimitive = new XE.Obj.CustomPrimitive(earth);
@@ -274,7 +275,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         this._customPrimitive.flyTo();
     }
 
-    registerEditing() {
+    _registerEditing() {
         // 5 编辑
         this.disposers.push(XE.Earth.Interaction.InteractionProperty.registerPolylineCreating(this._earth, this, {
             polylineCreatingProperty: 'creating',
