@@ -137,6 +137,14 @@ const defaultOptions = {
     * @memberof Tube
     */
     imageUrl: '',
+    /**
+    * 颜色叠加
+    * @type {array}
+    * @instance
+    * @default [1, 1, 1, 1]
+    * @memberof Tube
+    */
+    color: [1, 1, 1, 1],
 };
 
 // 1 基于XE.Core.XbsjCzmObj创建一个自定义的类
@@ -151,13 +159,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         // disposer属性是一个数组，用来收集需要在对象销毁时指定的函数
         // XE.MVVM.watch是用来进行监视的函数，第一个参数表明监视的对象，第二个参数表示监视对象发生变化时如何处理，是一个函数
         // XE.MVVM.watch的返回值是一个函数，调用该函数可以取消监控。把该函数放入disposer数组以后，它就会在对象销毁时自动执行。
-        this.disposers.push(XE.MVVM.watch(() => ({
-            positions: [...this.positions],
-            tubularSegments: this.tubularSegments,
-            radius: this.radius,
-            radialSegments: this.radialSegments,
-            closed: this.closed,
-        }), () => {
+        const update = () => {
             if (this.positions.length > 1) {
                 const {
                     center,
@@ -173,7 +175,25 @@ class Tube extends XE.Core.XbsjCzmObj {
                 this._customPrimitive.normals = normals;
                 this._customPrimitive.indices = indices;
             }
-        }));
+        }
+
+        update();
+        this.disposers.push(XE.MVVM.watch(() => ({
+            positions: [...this.positions],
+            tubularSegments: this.tubularSegments,
+            radius: this.radius,
+            radialSegments: this.radialSegments,
+            closed: this.closed,
+        }), update));
+
+        const update2 = () => {
+            this._customPrimitive.color = this.color;
+        };
+
+        update2();
+        this.disposers.push(XE.MVVM.watch(() => ({
+            color: [...this.color],
+        }), update2));
 
         // 3. 当speed发生变化时，相应地改变customPrimitive对象
         this.disposers.push(XE.MVVM.watch(() => [...this.speed], () => {
@@ -222,7 +242,7 @@ class Tube extends XE.Core.XbsjCzmObj {
                 float s = fract(u_customParams.x * time + v_st.s);
                 float t = fract(u_customParams.y * time + v_st.t);
                 vec4 imageColor = texture2D(u_image, vec2(s, t));
-                gl_FragColor = imageColor;
+                gl_FragColor = imageColor * u_color;
             }
         `;
 
