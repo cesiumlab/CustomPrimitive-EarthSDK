@@ -130,6 +130,14 @@ const defaultOptions = {
     */
     speed: [1, 1],
     /**
+    * 纹理在横向和综合的重复次数
+    * @type {array}
+    * @instance
+    * @default [1, 1]
+    * @memberof Tube
+    */
+    repeat: [1, 1],
+    /**
     * 图像路径
     * @type {string}
     * @instance
@@ -196,9 +204,14 @@ class Tube extends XE.Core.XbsjCzmObj {
         }), update2));
 
         // 3. 当speed发生变化时，相应地改变customPrimitive对象
-        this.disposers.push(XE.MVVM.watch(() => [...this.speed], () => {
+        this.disposers.push(XE.MVVM.watch(() => ({
+            speed: [...this.speed],
+            repeat: [...this.repeat]
+        }), () => {
             this._customPrimitive.customParams[0] = this.speed[0];
             this._customPrimitive.customParams[1] = this.speed[1];
+            this._customPrimitive.customParams[2] = this.repeat[0];
+            this._customPrimitive.customParams[3] = this.repeat[1];
         }));
 
         // 4. 当imageUrl发生变化时，相应地改变customPrimitive对象
@@ -240,9 +253,9 @@ class Tube extends XE.Core.XbsjCzmObj {
             uniform vec4 u_customParams;
             void main()
             {
-                float time = czm_frameNumber / 30.0;
-                float s = fract(u_customParams.x * time + v_st.s);
-                float t = fract(u_customParams.y * time + v_st.t);
+                float time = czm_frameNumber / 60.0;
+                float s = fract(u_customParams.z*(u_customParams.x * time + v_st.s));
+                float t = fract(u_customParams.w*(u_customParams.y * time + v_st.t));
                 vec4 imageColor = texture2D(u_image, vec2(s, t));
                 gl_FragColor = imageColor * u_color;
             }
