@@ -23,7 +23,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.1",
-    "earthsdk": "1.2.9",
+    "earthsdk": "1.2.10",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
