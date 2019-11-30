@@ -1,6 +1,6 @@
 {
   "name": "earthsdk-custom-primitive",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "EarthSDK自定义图元插件",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
