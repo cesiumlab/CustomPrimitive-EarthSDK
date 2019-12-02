@@ -1,6 +1,11 @@
 
 // 演示如何创建扩展一个czmObject类型的对象
 
+// 0.1 纯粹直线管道构建
+// function createVertexForLines(rawPositions, radius, radialSegments) {
+    
+// }
+
 // 0.1 函数准备，借助THREE.js来获取管线的顶点坐标数值
 function createVertexForTube(rawPositions, tubularSegments, radius, radialSegments, closed) {
     if (!rawPositions || rawPositions.length <= 1) {
@@ -93,10 +98,10 @@ const defaultOptions = {
     * 横向分割数
     * @type {number}
     * @instance
-    * @default 50
+    * @default 12
     * @memberof Tube
     */    
-    tubularSegments: 50,
+    tubularSegments: 12,
     /**
     * 半径大小，单位米
     * @type {number}
@@ -109,10 +114,10 @@ const defaultOptions = {
     * 径向分割数
     * @type {number}
     * @instance
-    * @default 18
+    * @default 5
     * @memberof Tube
     */      
-    radialSegments: 18,
+    radialSegments: 5,
     /**
     * 是否封闭
     * @type {boolean}
