@@ -118,7 +118,7 @@ function createVertexForLines(rawPositions, radius, radialSegments) {
         const dx = lp[(i+1)*3+0] - lp[i*3+0];
         const dy = lp[(i+1)*3+1] - lp[i*3+1];
         const dz = lp[(i+1)*3+2] - lp[i*3+2];
-        const distance = Math.sqrt(dx*dx+dy*dy+dz*dz);
+        const distance = Math.sqrt(dx*dx+dy*dy+dz*dz) + distances[i];
         distances.push(distance);
         totalDistance += distance;
     }
