@@ -80,7 +80,8 @@
                     </div>
                         <div class="box" style="position: absolute; left: 18px; top: 18px; color: white; background: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 25px;min-width:200px; font-size:24px; font-family: 宋体;">
                             <div class="defultbtn" :class="{'btnon':creating}" @click="creating = !creating">创建</div>
-                            <div class="defultbtn" style="margin-left:20px;" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div><br/>
+                            <div class="defultbtn" :class="{'btnon':editing}"  @click="editing = !editing">编辑</div>
+                            <div class="defultbtn" @click=flyto>定位</div><br/>
                             <span @click="closed = !closed" class="checkbox"><input class="curvearrow" type="checkbox" v-model="closed">是否闭合</span><br/>
                             <span style="vertical-align: middle;">图片地址：</span><input type="text" v-model="imageUrl"><br/>
                             <span style="vertical-align: middle;">管子半径：</span><input type="number" v-model.number="radius"><br/>
@@ -88,6 +89,10 @@
                             <span style="vertical-align: middle;">旋转速度：</span><input type="number" v-model.number="speed[1]"><br/>
                             <span style="vertical-align: middle;">径 向 段：</span><input type="number" v-model.number="radialSegments"><br/>
                             <span style="vertical-align: middle;">管　　段：</span><input type="number" v-model.number="tubularSegments"><br/>
+                            <span style="vertical-align: middle;">横向重复：</span><input type="number" v-model.number="repeat[0]"><br/>
+                            <span style="vertical-align: middle;">横向重复：</span><input type="number" v-model.number="repeat[1]"><br/>
+                            <span>颜色强度: {{ color[3] }}</span><br/>
+                            <input style="width: 286px;" type="range" min="0" max="10" step="1" v-model.number="color[3]"><br/>
                         </div>
                 </div>
             `,
@@ -101,7 +106,9 @@
                     imageUrl: "", // 图片地址
                     speed: [1, 1],
                     radialSegments: 18,
-                    tubularSegments: 50
+                    tubularSegments: 50,
+                    repeat: [0, 0],
+                    color: [1, 1, 1, 1],
                 };
             },
             // 1.1 资源创建
@@ -158,6 +165,8 @@
                 this._speedUnbind = XE.MVVM.bind(this, 'speed', tube, 'speed');
                 this._radialSegmentsUnbind = XE.MVVM.bind(this, 'radialSegments', tube, 'radialSegments');
                 this._tubularSegmentsUnbind = XE.MVVM.bind(this, 'tubularSegments', tube, 'tubularSegments');
+                this._repeatUnbind = XE.MVVM.bind(this, 'repeat', tube, 'repeat');
+                this._colorUnbind = XE.MVVM.bind(this, 'color', tube, 'color');
                 this._earth = earth;
 
                 // only for Debug
@@ -165,13 +174,8 @@
                 window.earth = earth;
             },
             methods: {
-                colorchange(event) {
-                    var color = event.target.value;
-                    circle.color = color.xeColor;
-                },
-                outlineColorchange(event) {
-                    var outlineColor = event.target.value;
-                    circle.outlineColor = outlineColor.xeColor;
+                flyto() {
+                    tube.flyTo();
                 }
             },
             // 1.2 资源销毁
@@ -185,6 +189,8 @@
                 this._speedUnbind = this._speedUnbind && this._speedUnbind();
                 this._radialSegmentsUnbind = this._radialSegmentsUnbind && this._radialSegmentsUnbind();
                 this._tubularSegmentsUnbind = this._tubularSegmentsUnbind && this._tubularSegmentsUnbind();
+                this._repeatUnbind = this._repeatUnbind && this._repeatUnbind();
+                this._colorUnbind = this._colorUnbind && this._colorUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
         }
