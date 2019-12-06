@@ -310,6 +310,14 @@ const defaultOptions = {
     * @memberof Tube
     */        
     isCurve: true,
+    /**
+     * 是否在三维窗口中显示
+     * @type {boolean}
+     * @instance
+     * @default true
+     * @memberof Obj.CustomPrimitive
+     */
+    show: true,
 };
 
 // 1 基于XE.Core.XbsjCzmObj创建一个自定义的类
@@ -369,11 +377,13 @@ class Tube extends XE.Core.XbsjCzmObj {
 
         const update2 = () => {
             this._customPrimitive.color = this.color;
+            this._customPrimitive.show = this.show;
         };
 
         update2();
         this.disposers.push(XE.MVVM.watch(() => ({
             color: [...this.color],
+            show: this.show,
         }), update2));
 
         // 3. 当speed发生变化时，相应地改变customPrimitive对象
@@ -410,7 +420,11 @@ class Tube extends XE.Core.XbsjCzmObj {
             }
         }));
 
+        // 注册编辑命令
         this._registerEditing();
+
+        this.disposers.push(XE.MVVM.bind(this, 'enabled', this, 'show'));
+
     }
 
     _createCustomPrimitive(earth) {
