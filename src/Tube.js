@@ -19,6 +19,13 @@ function createSingleCylinder(pos0, pos1, radius, radialSegments, s0, s1, indexS
 
     scratchMatrix = scratchMatrix || new Cesium.Matrix4();
     const modelMatrix = getModelMatrix(pos0, pos1, radius, scratchMatrix);
+    if (!modelMatrix) {
+        return {
+            positions: [],
+            sts: [],
+            indices: [],
+        };
+    }
     
     const positions = [];
     scratchCartesian = scratchCartesian || new Cesium.Cartesian3();
@@ -184,10 +191,10 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
         center = centerL;
 
         const lp = localPositions;
-        const ll = (lp.length / 3 | 0) - 1;
+        const ll = (lp.length / 3 | 0);
     
         const distances = [0];
-        for (let i=0; i<ll; ++i) {
+        for (let i=0; i<ll-1; ++i) {
             const dx = lp[(i+1)*3+0] - lp[i*3+0];
             const dy = lp[(i+1)*3+1] - lp[i*3+1];
             const dz = lp[(i+1)*3+2] - lp[i*3+2];
@@ -204,7 +211,13 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
         path = new THREE.CatmullRomCurve3(vectors);
     }
 
-    var geometry = new THREE.TubeGeometry(path, tubularSegments, radius, radialSegments, closed);
+    let geometry = undefined;
+    try {
+        geometry = new THREE.TubeGeometry(path, tubularSegments, radius, radialSegments, closed);
+    } catch (error) {
+        // console.warn('TubeGeometry got error!');
+        throw new Error('TubeGeometry got error!')
+    }
 
     var positions = geometry.faces.flatMap(e => {
         const va = geometry.vertices[e.a];
@@ -351,21 +364,25 @@ class Tube extends XE.Core.XbsjCzmObj {
         const update = () => {
             if (this.positions.length > 1) {
                 if (this.isCurve) {
-                    const {
-                        center,
-                        positions,
-                        sts,
-                        normals,
-                        indices,
-                        totalDistance,
-                    } = createVertexForTube(this.positions, this.tubularSegments, this.radius, this.radialSegments, this.closed);
-        
-                    this._customPrimitive.position = center;
-                    this._customPrimitive.positions = positions;
-                    this._customPrimitive.sts = sts;
-                    this._customPrimitive.normals = normals;
-                    this._customPrimitive.indices = indices;
-                    this._totalDistance = totalDistance;
+                    try {
+                        const {
+                            center,
+                            positions,
+                            sts,
+                            normals,
+                            indices,
+                            totalDistance,
+                        } = createVertexForTube(this.positions, this.tubularSegments, this.radius, this.radialSegments, this.closed);
+            
+                        this._customPrimitive.position = center;
+                        this._customPrimitive.positions = positions;
+                        this._customPrimitive.sts = sts;
+                        this._customPrimitive.normals = normals;
+                        this._customPrimitive.indices = indices;
+                        this._totalDistance = totalDistance;
+                    } catch (error) {
+                        
+                    }
                 } else {
                     const {
                         center,
