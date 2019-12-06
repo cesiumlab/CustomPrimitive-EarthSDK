@@ -398,27 +398,28 @@ class Tube extends XE.Core.XbsjCzmObj {
         }));
 
         // 4. 当imageUrl发生变化时，相应地改变customPrimitive对象
-        this.disposers.push(XE.MVVM.watch(() => this.imageUrl, () => {
-            const p = this._customPrimitive;
-            if (this.imageUrl) {
-                Cesium.Resource.createIfNeeded(this.imageUrl).fetchImage().then(function (image) {
-                    p.canvasWidth = image.naturalWidth;
-                    p.canvasHeight = image.naturalHeight;
-                    p.drawCanvas(ctx => {
-                        ctx.clearRect(0, 0, p.canvasWidth, p.canvasHeight);
-                        ctx.drawImage(image, 0, 0);
-                    });
-                });
-            } else {
-                p.canvasWidth = 1;
-                p.canvasHeight = 1;
-                p.drawCanvas(ctx => {
-                    ctx.clearRect(0, 0, 1, 1);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
-                    ctx.fillRect(0, 0, 1, 1);
-                });
-            }
-        }));
+        // this.disposers.push(XE.MVVM.watch(() => this.imageUrl, () => {
+        //     const p = this._customPrimitive;
+        //     if (this.imageUrl) {
+        //         Cesium.Resource.createIfNeeded(this.imageUrl).fetchImage().then(function (image) {
+        //             p.canvasWidth = image.naturalWidth;
+        //             p.canvasHeight = image.naturalHeight;
+        //             p.drawCanvas(ctx => {
+        //                 ctx.clearRect(0, 0, p.canvasWidth, p.canvasHeight);
+        //                 ctx.drawImage(image, 0, 0);
+        //             });
+        //         });
+        //     } else {
+        //         p.canvasWidth = 1;
+        //         p.canvasHeight = 1;
+        //         p.drawCanvas(ctx => {
+        //             ctx.clearRect(0, 0, 1, 1);
+        //             ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+        //             ctx.fillRect(0, 0, 1, 1);
+        //         });
+        //     }
+        // }));
+        this.disposers.push(XE.MVVM.track(this._customPrimitive, 'imageUrl', this, 'imageUrl'));
 
         // 注册编辑命令
         this._registerEditing();
