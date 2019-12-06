@@ -147,6 +147,7 @@ function createVertexForLines(rawPositions, radius, radialSegments) {
         positions,
         sts,
         indices,
+        totalDistance,
     };
 }
 
@@ -158,6 +159,7 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
 
     let path;
     let center;
+    let totalDistance = 0;
 
     {
         // const positions = [
@@ -181,7 +183,20 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
         const [localPositions, centerL] = XE.Obj.CustomPrimitive.Geometry.getLocalPositions(positions);
         center = centerL;
 
-        const ll = localPositions.length / 3 | 0;
+        const lp = localPositions;
+        const ll = (lp.length / 3 | 0) - 1;
+    
+        const distances = [0];
+        for (let i=0; i<ll; ++i) {
+            const dx = lp[(i+1)*3+0] - lp[i*3+0];
+            const dy = lp[(i+1)*3+1] - lp[i*3+1];
+            const dz = lp[(i+1)*3+2] - lp[i*3+2];
+            const distance = Math.sqrt(dx*dx+dy*dy+dz*dz) + distances[i];
+            distances.push(distance);
+            totalDistance += distance;
+        }
+
+        // const ll = localPositions.length / 3 | 0;
         const vectors = [];
         for (let i = 0; i < ll; ++i) {
             vectors.push(new THREE.Vector3(localPositions[i * 3 + 0], localPositions[i * 3 + 1], localPositions[i * 3 + 2]));
@@ -225,6 +240,7 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
         sts,
         normals,
         indices,
+        totalDistance,
     };
 }
 
@@ -271,13 +287,13 @@ const defaultOptions = {
     */    
     closed: false,
     /**
-    * 速度数组，第一个元素表示移动速度，第二个元素表示旋转速度
+    * 速度数组，第一个元素表示移动速度，第二个元素表示旋转速度，单位为米/秒
     * @type {array}
     * @instance
-    * @default [1, 1]
+    * @default [10, 5]
     * @memberof Tube
     */
-    speed: [1, 1],
+    speed: [10, 5],
     /**
     * 纹理在横向和综合的重复次数
     * @type {array}
@@ -341,6 +357,7 @@ class Tube extends XE.Core.XbsjCzmObj {
                         sts,
                         normals,
                         indices,
+                        totalDistance,
                     } = createVertexForTube(this.positions, this.tubularSegments, this.radius, this.radialSegments, this.closed);
         
                     this._customPrimitive.position = center;
@@ -348,12 +365,14 @@ class Tube extends XE.Core.XbsjCzmObj {
                     this._customPrimitive.sts = sts;
                     this._customPrimitive.normals = normals;
                     this._customPrimitive.indices = indices;
+                    this._totalDistance = totalDistance;
                 } else {
                     const {
                         center,
                         positions,
                         sts,
                         indices,
+                        totalDistance,
                     } = createVertexForLines(this.positions, this.radius, this.radialSegments);
 
                     this._customPrimitive.position = center;
@@ -361,6 +380,7 @@ class Tube extends XE.Core.XbsjCzmObj {
                     this._customPrimitive.sts = sts;
                     this._customPrimitive.normals = undefined;
                     this._customPrimitive.indices = indices;
+                    this._totalDistance = totalDistance;
                 }
             }
         }
@@ -391,8 +411,11 @@ class Tube extends XE.Core.XbsjCzmObj {
             speed: [...this.speed],
             repeat: [...this.repeat]
         }), () => {
-            this._customPrimitive.customParams[0] = this.speed[0];
-            this._customPrimitive.customParams[1] = this.speed[1];
+            // this._customPrimitive.customParams[0] = this.speed[0];
+            // this._customPrimitive.customParams[1] = this.speed[1];
+            const totalDistance = this._totalDistance || 0;
+            this._customPrimitive.customParams[0] = this.speed[0] / totalDistance;
+            this._customPrimitive.customParams[1] = this.speed[1] / (this.radius * Math.PI * 2.0);
             this._customPrimitive.customParams[2] = this.repeat[0];
             this._customPrimitive.customParams[3] = this.repeat[1];
         }));
