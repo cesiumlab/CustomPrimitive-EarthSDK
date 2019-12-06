@@ -295,13 +295,13 @@ const defaultOptions = {
     */
     speed: [10, 5],
     /**
-    * 纹理在横向和综合的重复次数
+    * 纹理对应实际空间的尺寸，单位是米
     * @type {array}
     * @instance
-    * @default [1, 1]
+    * @default [100, 10]
     * @memberof Tube
     */
-    repeat: [1, 1],
+    textureSize: [100, 10],
     /**
     * 图像路径
     * @type {string}
@@ -409,15 +409,15 @@ class Tube extends XE.Core.XbsjCzmObj {
         // 3. 当speed发生变化时，相应地改变customPrimitive对象
         this.disposers.push(XE.MVVM.watch(() => ({
             speed: [...this.speed],
-            repeat: [...this.repeat]
+            textureSize: [...this.textureSize]
         }), () => {
             // this._customPrimitive.customParams[0] = this.speed[0];
             // this._customPrimitive.customParams[1] = this.speed[1];
             const totalDistance = this._totalDistance || 0;
             this._customPrimitive.customParams[0] = this.speed[0] / totalDistance;
             this._customPrimitive.customParams[1] = this.speed[1] / (this.radius * Math.PI * 2.0);
-            this._customPrimitive.customParams[2] = this.repeat[0];
-            this._customPrimitive.customParams[3] = this.repeat[1];
+            this._customPrimitive.customParams[2] = totalDistance / this.textureSize[0];
+            this._customPrimitive.customParams[3] = (this.radius * Math.PI * 2.0) / this.textureSize[1];
         }));
 
         // 4. 当imageUrl发生变化时，相应地改变customPrimitive对象

@@ -89,8 +89,8 @@
                             <span style="vertical-align: middle;">旋转速度：</span><input type="number" v-model.number="speed[1]"><br/>
                             <span style="vertical-align: middle;">径 向 段：</span><input type="number" v-model.number="radialSegments"><br/>
                             <span style="vertical-align: middle;">管　　段：</span><input type="number" v-model.number="tubularSegments"><br/>
-                            <span style="vertical-align: middle;">横向重复：</span><input type="number" v-model.number="repeat[0]"><br/>
-                            <span style="vertical-align: middle;">横向重复：</span><input type="number" v-model.number="repeat[1]"><br/>
+                            <span style="vertical-align: middle;">横向纹理尺寸：</span><input type="number" v-model.number="textureSize[0]"><br/>
+                            <span style="vertical-align: middle;">径向纹理尺寸：</span><input type="number" v-model.number="textureSize[1]"><br/>
                             <span>颜色强度: {{ color[3] }}</span><br/>
                             <input style="width: 286px;" type="range" min="0" max="10" step="1" v-model.number="color[3]"><br/>
                         </div>
@@ -107,7 +107,7 @@
                     speed: [1, 1],
                     radialSegments: 18,
                     tubularSegments: 50,
-                    repeat: [0, 0],
+                    textureSize: [0, 0],
                     color: [1, 1, 1, 1],
                 };
             },
@@ -165,7 +165,7 @@
                 this._speedUnbind = XE.MVVM.bind(this, 'speed', tube, 'speed');
                 this._radialSegmentsUnbind = XE.MVVM.bind(this, 'radialSegments', tube, 'radialSegments');
                 this._tubularSegmentsUnbind = XE.MVVM.bind(this, 'tubularSegments', tube, 'tubularSegments');
-                this._repeatUnbind = XE.MVVM.bind(this, 'repeat', tube, 'repeat');
+                this._textureSizeUnbind = XE.MVVM.bind(this, 'textureSize', tube, 'textureSize');
                 this._colorUnbind = XE.MVVM.bind(this, 'color', tube, 'color');
                 this._earth = earth;
 
@@ -189,7 +189,7 @@
                 this._speedUnbind = this._speedUnbind && this._speedUnbind();
                 this._radialSegmentsUnbind = this._radialSegmentsUnbind && this._radialSegmentsUnbind();
                 this._tubularSegmentsUnbind = this._tubularSegmentsUnbind && this._tubularSegmentsUnbind();
-                this._repeatUnbind = this._repeatUnbind && this._repeatUnbind();
+                this._textureSizeUnbind = this._textureSizeUnbind && this._textureSizeUnbind();
                 this._colorUnbind = this._colorUnbind && this._colorUnbind();
                 this._earth = this._earth && this._earth.destroy();
             },
