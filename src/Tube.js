@@ -424,10 +424,7 @@ class Tube extends XE.Core.XbsjCzmObj {
         }), update2));
 
         // 3. 当speed发生变化时，相应地改变customPrimitive对象
-        this.disposers.push(XE.MVVM.watch(() => ({
-            speed: [...this.speed],
-            textureSize: [...this.textureSize]
-        }), () => {
+        const updateCustomPrimitive = () => {
             // this._customPrimitive.customParams[0] = this.speed[0];
             // this._customPrimitive.customParams[1] = this.speed[1];
             const totalDistance = this._totalDistance || 0;
@@ -435,7 +432,15 @@ class Tube extends XE.Core.XbsjCzmObj {
             this._customPrimitive.customParams[1] = this.speed[1] / (this.radius * Math.PI * 2.0);
             this._customPrimitive.customParams[2] = totalDistance / this.textureSize[0];
             this._customPrimitive.customParams[3] = (this.radius * Math.PI * 2.0) / this.textureSize[1];
-        }));
+        };
+
+        updateCustomPrimitive();
+        this.disposers.push(XE.MVVM.watch(() => ({
+            speed: [...this.speed],
+            textureSize: [...this.textureSize],
+            radius: this.radius,
+            positions: [...this.positions],
+        }), updateCustomPrimitive));
 
         // 4. 当imageUrl发生变化时，相应地改变customPrimitive对象
         // this.disposers.push(XE.MVVM.watch(() => this.imageUrl, () => {
