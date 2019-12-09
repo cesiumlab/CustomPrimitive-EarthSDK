@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+### 1.0.8
+
+##### Additions :tada:
+* 管道增加拾取功能
+
 ### 1.0.7 - 2019-11-25
 
 ##### Additions :tada:
