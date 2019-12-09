@@ -471,6 +471,7 @@ class Tube extends XE.Core.XbsjCzmObj {
 
         this.disposers.push(XE.MVVM.bind(this, 'enabled', this, 'show'));
 
+        XE.Earth.Interaction.Picking.registerPickingParent(this._customPrimitive, this);
     }
 
     _createCustomPrimitive(earth) {
