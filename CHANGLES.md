@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+### 1.0.9 - 2021-4-28
+##### Fixes :wrench:
+* 修复totalDistance计算错误，以及由此导致的speed速度不稳定
+
 ### 1.0.8 - 2019-12-10
 
 ##### Additions :tada:
