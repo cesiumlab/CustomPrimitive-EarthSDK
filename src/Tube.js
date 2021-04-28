@@ -127,7 +127,7 @@ function createVertexForLines(rawPositions, radius, radialSegments) {
         const dz = lp[(i+1)*3+2] - lp[i*3+2];
         const distance = Math.sqrt(dx*dx+dy*dy+dz*dz) + distances[i];
         distances.push(distance);
-        totalDistance += distance;
+        totalDistance = distance;
     }
 
     const positions = [];
@@ -200,7 +200,7 @@ function createVertexForTube(rawPositions, tubularSegments, radius, radialSegmen
             const dz = lp[(i+1)*3+2] - lp[i*3+2];
             const distance = Math.sqrt(dx*dx+dy*dy+dz*dz) + distances[i];
             distances.push(distance);
-            totalDistance += distance;
+            totalDistance = distance;
         }
 
         // const ll = localPositions.length / 3 | 0;
