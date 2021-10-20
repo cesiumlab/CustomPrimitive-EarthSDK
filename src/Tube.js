@@ -160,8 +160,13 @@ function createVertexForLines(rawPositions, radius, radialSegments) {
 
 // 0.2 函数准备，借助THREE.js来获取管线的顶点坐标数值
 function createVertexForTube(rawPositions, tubularSegments, radius, radialSegments, closed) {
+    if (!THREE) {
+        console.error(`使用Tube，需要预先加载three.js!`);
+        throw new Error('createVertexForTube error!')
+    }
+
     if (!rawPositions || rawPositions.length <= 1) {
-        throw new Error('rawPositions error!')
+        throw new Error('createVertexForTube rawPositions error!')
     }
 
     let path;
